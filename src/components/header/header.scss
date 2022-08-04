@@ -1,0 +1,12 @@
+nav.navbar{
+    padding-top:0.70rem;
+    padding-bottom: 0.70rem;
+    box-shadow: 0 3px 9px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    background-color: #fff;
+    .nav-link{
+        text-transform: uppercase;
+        color: #333;
+        letter-spacing: 1px;
+    }
+}

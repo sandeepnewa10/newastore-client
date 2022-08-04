@@ -1,4 +1,16 @@
 @import "~bootstrap/scss/bootstrap";
 
 /* The following line can be included in your src/index.js or App.js file */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Poppins:wght@400;500;600&display=swap');
+body{
+    background-color: #f5f5f9;
+    font-family: 'Poppins', sans-serif;
+}
 
+h1, h2{
+    font-family: 'Playfair Display', serif;
+}
+
+.form-wrap{
+    margin:2rem 0;
+}
