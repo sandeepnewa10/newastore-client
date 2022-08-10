@@ -7,6 +7,7 @@ import {
 import LoginPage from './pages/login/LoginPage'
 import AdminRegistration from './pages/admin-registration/AdminRegistration'
 import './App.scss';
+// import Dashboard from './pages/dashboard/Dashboard';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LoginPage/>}/>
             <Route path="/register" element={<AdminRegistration/>}/>
+            {/* <Route path="/dashboard" element={<Dashboard/>}/> */}
           </Routes>      
       </BrowserRouter>
     </div>

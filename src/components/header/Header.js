@@ -1,6 +1,7 @@
 import React from 'react'
 import {Container, Navbar, Nav} from 'react-bootstrap'
 import './header.scss'
+import {Link} from 'react-router-dom'
 
 const Header = () => {
   return (
@@ -10,8 +11,8 @@ const Header = () => {
         <Navbar.Brand href="/">Newa CMS</Navbar.Brand>
         <Navbar.Toggle />
         <Nav className="ms-auto">
-            <Nav.Link href="/">Login</Nav.Link>
-            <Nav.Link href="/register">Register</Nav.Link>           
+            <Link className="nav-link"  to="/">Login</Link>
+            <Link className="nav-link" to="/register">Register</Link>           
           </Nav>
       </Container>
     </Navbar>

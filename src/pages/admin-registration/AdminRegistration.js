@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import Header from './../../components/header/Header'
 import Footer from './../../components/footer/Footer'
-import { Container, Row, Form, Button } from 'react-bootstrap'
+import { Container, Row, Form, Button, Alert } from 'react-bootstrap'
 import { CustomInputField } from '../../components/customInputField/CustomInputField'
+import {postUser} from './../../helpers/axiosHelper'
 const AdminRegistration = () => {
 
   const [form, setForm] = useState({})
+  const [response, setResponse] = useState({})
 
   const handleOnChange = e => {
     const { name, value } = e.target
@@ -15,10 +17,19 @@ const AdminRegistration = () => {
     })
   }
 
-  const handleOnSubmit = e => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault()
-    console.log(form)
+    const {confirmPassword, ...rest} = form;
+    if(confirmPassword !== rest.password){
+      return alert ("password do not match")
+    }
+    const result = await postUser(rest);
+    setResponse(result)
   }
+
+
+
+
 
   const fields = [
     {
@@ -30,7 +41,7 @@ const AdminRegistration = () => {
     },
     {
       label: "Last Name",
-      name: "lfName",
+      name: "lName",
       type: "text",
       placeholder: "Smith",
       required: true,
@@ -56,8 +67,7 @@ const AdminRegistration = () => {
       type: "date",
       placeholder: "DOB",
       required: true,
-    },
-    ,
+    },    
     {
       label: "Address",
       name: "address",
@@ -65,7 +75,6 @@ const AdminRegistration = () => {
       placeholder: "address",
       required: true,
     },
-
     {
       label: "password",
       name: "password",
@@ -73,16 +82,15 @@ const AdminRegistration = () => {
       placeholder: "password",
       required: true,
     },
-
     {
       label: "Confirm Password",
-      name: "confirmpassword",
+      name: "confirmPassword",
       type: "password",
       placeholder: "******",
       required: true,
     },
-
   ]
+
   return (
 
     <>
@@ -97,6 +105,13 @@ const AdminRegistration = () => {
               <h2>New Admin Registration</h2>
             </div>
             <Form onSubmit={handleOnSubmit}>
+
+            {
+                 response.message && (<Alert variant={response.status === "success" ? "success" : "danger"}>
+                 {response.message}
+                 </Alert>
+                 
+                 )}
               <div className="form-wrap">
                 <Row>
 
