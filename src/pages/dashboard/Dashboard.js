@@ -19,14 +19,10 @@ const Dashboard = () => {
     const ToggleSidebar = () => {
         sidebarIsOpen ? setSidebarIsOpen(false) : setSidebarIsOpen(true);
     }
-
-
-
-
-    const [navMenu, setNavMenu] = useState(false);
-    const ToggleMenu = () => {
-        navMenu ? setNavMenu(false) : setNavMenu(true);
-    }
+    // const [navMenu, setNavMenu] = useState(false);
+    // const ToggleMenu = () => {
+    //     navMenu ? setNavMenu(false) : setNavMenu(true);
+    // }
 
 
 
@@ -50,7 +46,7 @@ const Dashboard = () => {
                                 <div>Dashboard</div>
                             </a>
                         </li>
-                        <li className='parent open'  onClick={ToggleMenu}>
+                        <li className='parent open'>
                             <a href="" className='menu-toggle link'>
                                 <i><RiLayoutLine /></i>
                                 <div>Layouts</div>
