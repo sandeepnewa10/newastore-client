@@ -28,3 +28,13 @@ export const postUser = (data) =>{
     }
     return apiProcesser(option)
 }
+
+// vertify admin user account
+export const emailVerifyAdminUser = (data) =>{
+    const option = {
+        method:"patch",
+        url:adminUserEP + "/verify-email",
+        data,
+    }
+    return apiProcesser(option)
+}
