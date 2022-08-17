@@ -7,10 +7,19 @@ export const loginUserAction = data => async  dispatch => {
 
     toast.promise(resultPromise, { pending: "please wait..." })
 
-    const { status, message, user } = await resultPromise
+    const { status, message, user, accessJWT, refreshJWT } = await resultPromise
 
     toast[status](message)
 
-    status === "success" && dispatch(setAdminUser(user))
+    if(status === "success" ){
+        sessionStorage.setItem("accssJWT", accessJWT);
+        localStorage.setItem("refreshJWT", refreshJWT);
+        dispatch(setAdminUser(user))
+    }    
 
+}
+
+
+export const adminLogout = () => dispatch =>{
+    dispatch(setAdminUser({}))
 }
