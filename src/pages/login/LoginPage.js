@@ -1,93 +1,82 @@
-import React, { useEffect, useState } from 'react'
-import Header from './../../components/header/Header'
-import Footer from './../../components/footer/Footer'
-import { Container, Row, Button, Form } from 'react-bootstrap'
-import { CustomInputField } from '../../components/customInputField/CustomInputField'
-import { useDispatch, useSelector } from 'react-redux'
-import { loginUserAction } from "./userAction"
-import { useNavigate, useLocation } from 'react-router-dom'
-
+import React, { useEffect, useState } from "react";
+import { Button, Container, Form } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { CustomInputField } from "../../components/customInputField/CustomInputField";
+import { Footer } from "../../components/footer/Footer";
+import { Header } from "../../components/header/Header";
+import { autoLogin, loginUserAction } from "./userAction";
 
 const LoginPage = () => {
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const location = useLocation()
-    const [form, setForm] = useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [form, setForm] = useState({});
 
-    const { user } = useSelector(state => state.admin)
+  const { user } = useSelector((state) => state.admin);
 
-    const origin = (location.state && location.state.from && location.state.from.pathname) || '/dashboard'
+  const origin =
+    (location.state && location.state.from && location.state.from.pathname) ||
+    "/dashboard";
 
+  useEffect(() => {
+    user._id ? navigate(origin) : dispatch(autoLogin());
+  }, [user, navigate, dispatch]);
 
-    useEffect(() => {
-        user._id && navigate(origin);
-    }, [user, navigate])
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
 
-    const handleOnChange = e => {
-        const { name, value } = e.target
-        setForm({
-            ...form,
-            [name]: value
-        })
-    }
-    const handleOnSubmit = e => {
-        e.preventDefault()
-        console.log(form)
-        dispatch(loginUserAction(form))
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
 
-    }
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
 
+    dispatch(loginUserAction(form));
+  };
 
-    return (
-        <>
-            <Header />
-            <section className="login-template">
-                <Container>
-                    <Row>
-                        <div className='page-title'>
-                            <h2>Login</h2>
-                        </div>
+  return (
+    <div>
+      <Header />
 
-                        <div className="form-wrap">
-                            <Form onSubmit={handleOnSubmit}>
-                                <Row>
+      <Container className="page-main">
+        <div className="form">
+          <h3>Welcome back!</h3>
+          <hr />
+          <Form onSubmit={handleOnSubmit}>
+            <CustomInputField
+              onChange={handleOnChange}
+              label="Email"
+              type="email"
+              name="email"
+              required={true}
+              placeholder="your@email.com"
+            />
+            <CustomInputField
+              onChange={handleOnChange}
+              label="Password"
+              type="password"
+              name="password"
+              required={true}
+              placeholder="******"
+            />
+            <Button variant="primary" type="submit">
+              Login
+            </Button>
+          </Form>
 
-                                    <div className="col-md-6 mb-1">
-                                        <CustomInputField label="Email" onChange={handleOnChange} name="email" type="email" required={true} placeholder="Your Email"
-                                        />
-                                    </div>
-                                    <div className="col-md-6 mb-1">
-                                        <CustomInputField label="Password" onChange={handleOnChange} name="password" type="password" required={true} placeholder="******"
-                                        />
-                                    </div>
+          <div className="text-end py-3">
+            Forgot <a href="/reset-password"> Password</a> ?
+          </div>
+        </div>
+      </Container>
 
+      <Footer />
+    </div>
+  );
+};
 
-                                </Row>
-                                <Row>
-                                    <div className="col mb-4">
-                                        <Button className='btn btn-primary' type='submit'>Sign in</Button>
-                                    </div>
-                                </Row>
-                                <Row>
-                                    <div className="col mb-4">
-                                        <a href="/">Forgot Password</a>
-                                    </div>
-                                </Row>
-                                <Row>
-                                    <div className="col mb-4">
-                                        Don’t have an account?  <a href="/">Sign Up</a>
-                                    </div>
-                                </Row>
-
-                            </Form>
-                        </div>
-
-                    </Row>
-                </Container>
-            </section>
-            <Footer />
-        </>
-    )
-}
-
-export default LoginPage
+export default LoginPage;

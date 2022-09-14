@@ -1,0 +1,21 @@
+.card{
+    background-color: grey;
+}
+.card-body{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.card-title{
+    font-size: 3rem;
+    width: 200px;
+    height: 200px;
+    border: 1px solid #000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+}

@@ -1,57 +1,79 @@
-import React, { useEffect, useState } from 'react'
-import { Container, Card, Spinner, Alert } from 'react-bootstrap'
-import { useSearchParams } from 'react-router-dom'
-import Footer from '../../components/footer/Footer'
-import Header from '../../components/header/Header'
-import {emailVerifyAdminUser} from "../../helpers/axiosHelper"
-// show the spinner first
+import React, { useEffect, useState } from "react";
+import { Alert, Card, Container, Spinner } from "react-bootstrap";
+import { useSearchParams } from "react-router-dom";
+import { Footer } from "../../components/footer/Footer";
+import { Header } from "../../components/header/Header";
+import { eamilVerifyAdminUser } from "../../helpers/axiosHelper";
+
 // grab the c and e from the query string parameters
-//create an axios function to call the server
+// create an axios fucntion to call the server
 
-// create api endpoint to receive this code
-// check if the combination of the email and code exit in the user table, if so activate the suser and send mail notification
+// create api enpoint to receive this code
+// check if the commbination of the email and code exist in the user tale, if so activate the user and send email notification
 
-const EmailVerification = () =>{
-    const [queryParams] = useSearchParams()
-    const [isPending, setIsPending] = useState(true);
-    const [response, setResponse] = useState({})
-    
+const EmailVerification = () => {
+  const [queryParams] = useSearchParams();
+  const [isPending, setIsPending] = useState(true);
+  const [response, setRespose] = useState({});
 
-    useEffect(()=>{
-       const obj ={
-        emailValidationCode:  queryParams.get("c"),
-        email: queryParams.get("e"),
-       };
+  useEffect(() => {
+    let ignore = false;
+    const obj = {
+      emailValidationCode: queryParams.get("c"),
+      email: queryParams.get("e"),
+    };
+    // call axios to call the server
 
-       // call axios to call the server
-       (async () =>{
-        const result = await emailVerifyAdminUser(obj);
-        setResponse(result)
-        setIsPending(false)
-       })()
-      
+    // (async () => {
+    //   if (!ignore) {
+    //     const result = await eamilVerifyAdminUser(obj);
+    //     setRespose(result);
+    //     setIsPending(false);
+    //   }
+    // })();
 
-    }, [queryParams])
+    eamilVerifyAdminUser(obj).then((result) => {
+      if (!ignore) {
+        setRespose(result);
+        setIsPending(false);
+      }
+    });
+
+    return () => {
+      ignore = true;
+    };
+  }, [queryParams]);
+
+  console.log(response);
   return (
-    <>
-    <Header/>
-    <Container>
     <div>
-        
-        {isPending && <Card className="mt-4  p-3 m-auto" style={{width: "30rem"}}>
-            <Spinner variant='primary' animation="border" className=' m-auto p-4 mt-3 mb-3' ></Spinner>
-          <h5>Email verification processing has begin. Please wait . . .</h5>  </Card>}
+      <Header />
 
-          {
-            response.message && <Alert variant={ response.status === 'success' ? 'success' : 'danger'}  className="mt-4  p-3 m-auto">
+      <Container className="page-main">
+        {isPending && (
+          <Card className="mt-5 p-2 m-auto" style={{ width: "20rem" }}>
+            <Spinner
+              variant="primary"
+              animation="border"
+              className="m-auto mb-4"
+            />
 
-                {response.message}
-            </Alert>
-          }
-        </div></Container>
-    <Footer/>
-    </>
-  )
-}
+            <h5>Eamil verification process has began. please wait ....</h5>
+          </Card>
+        )}
+        {response.message && (
+          <Alert
+            variant={response.status === "success" ? "success" : "danger"}
+            className="mt-5 p-2 m-auto"
+          >
+            {response.message}
+          </Alert>
+        )}
+      </Container>
 
-export default EmailVerification
+      <Footer />
+    </div>
+  );
+};
+
+export default EmailVerification;

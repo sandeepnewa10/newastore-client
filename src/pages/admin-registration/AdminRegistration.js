@@ -1,35 +1,34 @@
-import React, { useState } from 'react'
-import Header from './../../components/header/Header'
-import Footer from './../../components/footer/Footer'
-import { Container, Row, Form, Button, Alert } from 'react-bootstrap'
-import { CustomInputField } from '../../components/customInputField/CustomInputField'
-import {postUser} from './../../helpers/axiosHelper'
+import React, { useState } from "react";
+import { Footer } from "../../components/footer/Footer";
+import { Header } from "../../components/header/Header";
+import { Alert, Button, Container, Form } from "react-bootstrap";
+import { CustomInputField } from "../../components/customInputField/CustomInputField";
+import { postUser } from "../../helpers/axiosHelper";
+
 const AdminRegistration = () => {
+  const [form, setForm] = useState({});
+  const [response, setResponse] = useState({});
 
-  const [form, setForm] = useState({})
-  const [response, setResponse] = useState({})
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
 
-  const handleOnChange = e => {
-    const { name, value } = e.target
     setForm({
       ...form,
       [name]: value,
-    })
-  }
+    });
+  };
 
   const handleOnSubmit = async (e) => {
-    e.preventDefault()
-    const {confirmPassword, ...rest} = form;
-    if(confirmPassword !== rest.password){
-      return alert ("password do not match")
+    e.preventDefault();
+
+    const { confirmPassword, ...rest } = form;
+    if (confirmPassword !== rest.password) {
+      return alert("password do not match");
     }
+
     const result = await postUser(rest);
-    setResponse(result)
-  }
-
-
-
-
+    setResponse(result);
+  };
 
   const fields = [
     {
@@ -43,43 +42,39 @@ const AdminRegistration = () => {
       label: "Last Name",
       name: "lName",
       type: "text",
-      placeholder: "Smith",
+      placeholder: "smith",
       required: true,
     },
     {
       label: "Email",
       name: "email",
       type: "email",
-      placeholder: "email",
+      placeholder: "you@email.cm",
       required: true,
     },
-
     {
       label: "Phone",
       name: "phone",
       type: "number",
-      placeholder: "Phone",
+      placeholder: "04111111",
       required: true,
     },
     {
       label: "DOB",
       name: "dob",
       type: "date",
-      placeholder: "DOB",
-      required: true,
-    },    
+    },
     {
       label: "Address",
       name: "address",
       type: "text",
-      placeholder: "address",
-      required: true,
+      placeholder: "1 george st Sydney",
     },
     {
-      label: "password",
+      label: "Password",
       name: "password",
       type: "password",
-      placeholder: "password",
+      placeholder: "******",
       required: true,
     },
     {
@@ -89,71 +84,41 @@ const AdminRegistration = () => {
       placeholder: "******",
       required: true,
     },
-  ]
+  ];
 
   return (
-
-    <>
+    <div>
       <Header />
 
+      <Container className="page-main">
+        <div className="form">
+          <Form onSubmit={handleOnSubmit}>
+            <h1>New Admin Registration</h1>
 
-      <section className="registration-template">
-        <Container>
+            {response.message && (
+              <Alert
+                variant={response.status === "success" ? "success" : "danger"}
+              >
+                {response.message}
+              </Alert>
+            )}
 
-          <Row>
-            <div className='page-title'>
-              <h2>New Admin Registration</h2>
-            </div>
-            <Form onSubmit={handleOnSubmit}>
+            <hr />
 
-            {
-                 response.message && (<Alert variant={response.status === "success" ? "success" : "danger"}>
-                 {response.message}
-                 </Alert>
-                 
-                 )}
-              <div className="form-wrap">
-                <Row>
+            {fields.map((item, i) => (
+              <CustomInputField key={i} {...item} onChange={handleOnChange} />
+            ))}
 
-                  {fields.map((item, i) => (
-                    <div className="col-md-6 mb-1">
-                      <CustomInputField key={i} {...item} onChange={handleOnChange} />
-                    </div>
-                  ))}
-
-
-                </Row>
-
-                <Row>
-                  <div className="col mb-4">
-                    <Button className='btn btn-primary' type='submit'>Submit</Button>
-                  </div>
-                </Row>
-                <Row>
-                  <div className="col mb-4">
-                    <a href="/">Forgot Password</a>
-                  </div>
-                </Row>
-
-
-
-
-                <Row>
-                  <div className="col mb-4">
-                    Already have an account? <a href="/">Sign in</a>
-                  </div>
-                </Row>
-
-
-              </div> </Form>
-
-          </Row>
-        </Container>
-      </section>
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </div>
+      </Container>
 
       <Footer />
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default AdminRegistration
+export default AdminRegistration;
